@@ -6,7 +6,7 @@ function Login() {
       <h1>Login</h1>
       <form>
         <div>
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="username">nombre:</label>
           <input type="text" id="username" name="username" />
         </div>
         <div>
