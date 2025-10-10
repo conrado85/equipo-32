@@ -1,9 +1,29 @@
 import img1 from "../../../public/login.jpg";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { api } from "../../api/axios";
 
 function Login() {
-  const inputClass =
-    "w-full rounded-md bg-white px-4 py-2 my-2 text-base text-gray-900 placeholder:text-gray-400 border border-gray-200 shadow-sm";
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [mensaje, setMensaje] = useState("");
+
+   const manejarLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const respuesta = await api.post("/auth/login", { email, password });
+      const token = respuesta.data.access_token;
+      localStorage.setItem("token", token);
+      setMensaje("✅ Inicio de sesión exitoso");
+      // redirigir a otra página si querés
+    } catch (error) {
+      console.error(error);
+      setMensaje("❌ Credenciales inválidas");
+    }
+  };
+
+  const inputClass ="w-full rounded-md bg-white px-4 py-2 my-2 text-base text-gray-900 placeholder:text-gray-400 border border-gray-200 shadow-sm";
   const inputFocus = "focus:outline-none focus:ring-2 focus:ring-indigo-500";
 
   return (
@@ -20,7 +40,7 @@ function Login() {
           <h1 className="text-2xl font-semibold text-gray-800 mb-4 text-center">
             Iniciar sesión
           </h1>
-          <form className="space-y-3">
+          <form className="space-y-3" onSubmit={manejarLogin}>
             <label htmlFor="email" className="sr-only">
               Correo electrónico
             </label>
@@ -31,6 +51,8 @@ function Login() {
               placeholder="Correo electrónico"
               required
               autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className={`${inputClass} ${inputFocus}`}
             />
 
@@ -44,6 +66,8 @@ function Login() {
               placeholder="Contraseña"
               required
               autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className={`${inputClass} ${inputFocus}`}
             />
 
@@ -62,6 +86,7 @@ function Login() {
             >
               Ingresar
             </button>
+            {mensaje && <p className="mt-3 text-center text-sm">{mensaje}</p>}
 
             <p className="text-center text-sm text-gray-600 mt-3">
               ¿No tienes una cuenta?{" "}
