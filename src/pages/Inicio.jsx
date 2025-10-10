@@ -1,11 +1,8 @@
-import React from 'react'
+import Hero from '../components/Hero/Hero';
 
 function Inicio() {
   return (
-    <div>
-      <h1>Inicio</h1>
-      <p>Bienvenido a nuestra aplicación.</p>
-    </div>
+   <Hero/>
   )
 }
 
