@@ -1,4 +1,4 @@
-import { Link, Links } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function NavBar() {
   return (
@@ -39,10 +39,10 @@ function NavBar() {
               <Link to="/contacto">Contacto</Link>
             </li>
             <li>
-              <Link className="btn btn-soft btn-info rounded-xl m-2" to="/inicio-sesion">Inicio Sesion</Link>
+              <Link className="btn btn-soft btn-info rounded-xl m-2" to="/login">Inicio Sesion</Link>
             </li>
             <li>
-              <Link className="btn btn-info rounded-xl m-2" to="/crear-cuenta">Crear Cuenta</Link>
+              <Link className="btn btn-info rounded-xl m-2" to="/register">Crear Cuenta</Link>
             </li>
           </ul>
         </div>

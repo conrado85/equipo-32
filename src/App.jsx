@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Inicio from "./pages/Inicio";
-import Login from "./pages/Login";
+import Login from "./pages/Login/Login";
 import Register from "./pages/Register";
 import Turnos from "./pages/Turnos";
 import Dashboard from "./pages/Dashboard";
