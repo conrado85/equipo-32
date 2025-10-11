@@ -1,9 +1,13 @@
-import Hero from '../components/Hero/Hero';
-
+import Hero from "../components/Hero/Hero";
+import AboutUs from "../components/AboutUs";
 function Inicio() {
   return (
-   <Hero/>
-  )
+    <>
+      <Hero />
+
+      <AboutUs />
+    </>
+  );
 }
 
-export default Inicio
+export default Inicio;
