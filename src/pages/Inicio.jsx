@@ -1,12 +1,17 @@
-import React from 'react'
+import Hero from "../components/Hero/Hero";
+import AboutUs from "../components/AboutUs";
+import Features from "../components/Features";
 
 function Inicio() {
   return (
-    <div>
-      <h1>Inicio</h1>
-      <p>Bienvenido a nuestra aplicación.</p>
-    </div>
-  )
+    <>
+      <Hero />
+
+      <AboutUs />
+
+      <Features />
+    </>
+  );
 }
 
-export default Inicio
+export default Inicio;

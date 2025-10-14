@@ -1,8 +1,8 @@
-import React from "react";
+import { Link } from "react-router-dom";
 
 function NavBar() {
   return (
-    <div className="navbar bg-base-100 shadow-sm">
+    <div className="navbar bg-base-200 shadow-sm z-11">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -24,54 +24,49 @@ function NavBar() {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+            className="menu menu-sm dropdown-content bg-base-200 rounded-box z-11 mt-3 w-52 p-2 shadow"
           >
             <li>
-              <a>Item 1</a>
+              <Link to="/#about">Sobre Nosotros</Link>
             </li>
             <li>
-              <a>Parent</a>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
+              <Link to="/preguntas-frecuentes">Preguntas Frecuentes</Link>
             </li>
             <li>
-              <a>Item 3</a>
+              <Link to="/soluciones">soluciones</Link>
+            </li>
+            <li>
+              <Link to="/contacto">Contacto</Link>
+            </li>
+            <li>
+              <Link className="btn btn-soft btn-info rounded-xl m-2" to="/login">Inicio Sesion</Link>
+            </li>
+            <li>
+              <Link className="btn btn-info rounded-xl m-2" to="/register">Crear Cuenta</Link>
             </li>
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">daisyUI</a>
+        <Link className="text-xl font-bold" to="/">SaludOne</Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <a>Item 1</a>
+            <Link to="/#about">Sobre Nosotros</Link>
           </li>
           <li>
-            <details>
-              <summary>Parent</summary>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </details>
+            <Link to="/preguntas-frecuentes">Preguntas Frecuentes</Link>
           </li>
           <li>
-            <a>Item 3</a>
+            <Link to="/soluciones">soluciones</Link>
+          </li>
+          <li>
+            <Link to="/contacto">Contacto</Link>
           </li>
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        <Link className="hidden lg:btn btn-soft btn-info lg:rounded-xl m-2" to="/login">Inicio Sesion</Link>
+        <Link className="hidden lg:text-white lg:btn btn-info lg:rounded-xl m-2" to="/register">Crear Cuenta</Link>
       </div>
     </div>
   );
