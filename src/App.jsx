@@ -6,6 +6,7 @@ import Register from "./pages/Register";
 import Turnos from "./pages/Turnos";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import Footer from "./components/Footer"
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Footer/>
     </BrowserRouter>
   );
 }
