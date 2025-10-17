@@ -46,7 +46,7 @@ function NavBar() {
             </li>
           </ul>
         </div>
-        <Link className="text-xl font-bold" to="/">SaludOne</Link>
+        <Link className="text-xl font-bold text-blue-700" to="/">SaludOne</Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">

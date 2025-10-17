@@ -4,8 +4,8 @@ const Footer = () => {
   return (
     <footer className="footer sm:footer-horizontal bg-base-200 text-base-content p-10">
   <aside>
-    <p>
-     Logo
+    <p className="font-bold text-xl text-blue-700"  >
+     SaludOne
     </p>
   </aside>
   <nav>
