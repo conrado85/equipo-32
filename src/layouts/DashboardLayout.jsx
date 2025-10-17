@@ -16,30 +16,15 @@ export default function DashboardLayout() {
   const location = useLocation();
 
   const menuItems = [
-    {
-      path: "/dashboard/welcome",
-      label: "Inicio",
-      icon: UserRound,
-    },
-    {
-      path: "/dashboard/appointments",
-      label: "Turnos",
-      icon: CalendarCheck,
-    },
-    {
-      path: "/dashboard/medical-records",
-      label: "Historias médicas",
-      icon: FileText,
-    },
-    {
-      path: "/dashboard/video-consultation",
-      label: "Video consulta",
-      icon: Video,
-    },
+    { path: "/dashboard/welcome",label: "Inicio",icon: UserRound },
+    { path: "/dashboard/appointments",label: "Turnos",icon: CalendarCheck},
+    { path: "/dashboard/medical-records",label: "Historias médicas",icon: FileText },
+    { path: "/dashboard/video-consultation",label: "Video consulta",icon: Video},
     { path: "/dashboard/treatments", label: "Tratamientos", icon: Pill },
     { path: "/dashboard/my-notes", label: "Mis notas", icon: Notebook },
     { path: "/dashboard/settings", label: "Configuraciones", icon: Settings },
   ];
+   
 
   return (
     <>
@@ -52,7 +37,7 @@ export default function DashboardLayout() {
               <Link
                 key={path}
                 to={path}
-                className={`flex items-center gap-3 pb-9 rounded transition ${
+                className={`flex items-center gap-3 mb-9  rounded transition ${
                   location.pathname === path
                     ? "bg-gray-400 text-white font-semibold"
                     : "hover:bg-gray-300 text-gray-600"
