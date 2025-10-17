@@ -5,9 +5,7 @@ import Register from "./pages/Register";
 import Turnos from "./pages/Turnos";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
-import NavBar from "./components/NavBar";
-
-import ProtectedRoute from "./routes/ProtectedRoute";
+import Footer from "./components/Footer"
 
 function App() {
   return (
@@ -40,7 +38,8 @@ function App() {
         {/* Ruta por defecto */}
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </Router>
+      <Footer/>
+    </BrowserRouter>
   );
 }
 
