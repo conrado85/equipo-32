@@ -16,7 +16,9 @@ function Login() {
       const token = respuesta.data.access_token;
       localStorage.setItem("token", token);
       setMensaje("✅ Inicio de sesión exitoso");
+      window.location.href = "/dashboard";
       // redirigir a otra página si querés
+      
     } catch (error) {
       console.error(error);
       setMensaje("❌ Credenciales inválidas");
