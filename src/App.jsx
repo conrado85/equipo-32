@@ -54,7 +54,7 @@ function App() {
         <Route path="*" element={<NoTFound />} />
       </Routes>
     </Router>
-  );
+  )
 }
 
 export default App;
