@@ -16,7 +16,7 @@ export default function DashboardLayout() {
   const location = useLocation();
 
   const menuItems = [
-     {
+    {
       path: "/dashboard/welcome",
       label: "Inicio",
       icon: UserRound,
