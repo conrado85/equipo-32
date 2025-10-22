@@ -2,7 +2,7 @@ import React from "react";
 
 function NavBarPrivate() {
   return (
-    <div className="navbar bg-gray-200 shadow-sm">
+    <div className="navbar bg-white shadow-sm">
       <div className="flex-1">
         <a className="btn btn-ghost text-xl text-blue-700">SaludOne</a>
       </div>
