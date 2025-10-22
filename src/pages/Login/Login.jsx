@@ -16,7 +16,9 @@ function Login() {
       const token = respuesta.data.access_token;
       localStorage.setItem("token", token);
       setMensaje("✅ Inicio de sesión exitoso");
+      window.location.href = "/dashboard/welcome";
       // redirigir a otra página si querés
+      
     } catch (error) {
       console.error(error);
       setMensaje("❌ Credenciales inválidas");
@@ -27,7 +29,7 @@ function Login() {
   const inputFocus = "focus:outline-none focus:ring-2 focus:ring-indigo-500";
 
   return (
-    <div className="min-h-[90vh] flex">
+    <div className="min-h-[calc(100vh-64px)] flex">
       <div
         className="hidden md:block md:w-2/3 lg:w-1/2 bg-cover bg-center"
         style={{ backgroundImage: `url(${img1})` }}

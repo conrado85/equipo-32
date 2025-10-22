@@ -1,27 +1,60 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import NavBar from "./components/NavBar";
-import Inicio from "./pages/Inicio";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+// Layouts
+import PublicLayout from "./layouts/PublicLayout";
+import DashboardLayout from "./layouts/DashboardLayout";
+
+// Rutas protegidas
+import ProtectedRoute from "./routes/ProtectedRoute";
+
+// Páginas públicas
+import Home from "./pages/Inicio";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register";
-import Turnos from "./pages/Turnos";
-import Dashboard from "./pages/Dashboard";
-import NotFound from "./pages/NotFound";
+import NoTFound from "./pages/NoTFound";
+
+// Páginas del dashboard (privadas)
+import Welcome from "./pages/dashboard/Welcome";
+import Appointments from "./pages/dashboard/Appointments";
+import MedicalRecords from "./pages/dashboard/MedicalRecords";
+import VideoConsultation from "./pages/dashboard/VideoConsultation";
+import Treatments from "./pages/dashboard/Treatments";
+import MyNotes from "./pages/dashboard/MyNotes";
+import Settings from "./pages/dashboard/Settings";
 
 function App() {
   return (
-    <BrowserRouter>
-      <NavBar />
+    <Router>
       <Routes>
-        <Route path="/" element={<Inicio />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/turnos" element={<Turnos />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="*" element={<NotFound />} />
+        {/* RUTAS PÚBLICAS */}
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
+
+        {/* RUTAS PRIVADAS (Dashboard) */}
+        <Route
+          element={
+            <ProtectedRoute>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/dashboard/welcome" element={<Welcome />} />
+          <Route path="/dashboard/appointments" element={<Appointments />} />
+          <Route path="/dashboard/medical-records" element={<MedicalRecords />} />
+          <Route path="/dashboard/video-consultation" element={<VideoConsultation />} />
+          <Route path="/dashboard/treatments" element={<Treatments />} />
+          <Route path="/dashboard/my-notes" element={<MyNotes />} />
+          <Route path="/dashboard/settings" element={<Settings />} />
+        </Route>
+
+        {/* Redirección por defecto */}
+        <Route path="*" element={<NoTFound />} />
       </Routes>
-    </BrowserRouter>
-  );
+    </Router>
+  )
 }
 
 export default App;
-        

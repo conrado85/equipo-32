@@ -3,6 +3,11 @@
 Aplicación web para la gestión de una clínica.  
 Permite el acceso con diferentes roles (Administrador, Médico, Paciente) y muestra contenido según el tipo de usuario.  
 
+[Repositorio del equipo 32 en GitHub](https://github.com/conrado85/equipo-32.git)
+
+[Repositorio del equipo 32 en GitHub  Proyects](https://github.com/users/conrado85/projects/8)
+
+
 ---
 
 ## 🚀 Tecnologías utilizadas
@@ -28,8 +33,8 @@ Permite el acceso con diferentes roles (Administrador, Médico, Paciente) y mues
 
 1. Clonar el repositorio:
    ```bash
-   https://github.com/conrado85/equipo-32.git
-   cd app-clinica
+   git clone https://github.com/conrado85/equipo-32.git
+   cd equipo-32
 
 Perfecto 🔥 — acá tenés **el archivo completo listo para usar como `README.md`**, ya en formato Markdown puro, sin explicaciones ni texto fuera del archivo.
 Podés copiarlo y pegarlo directamente en tu repo 👇
