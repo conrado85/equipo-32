@@ -10,23 +10,30 @@ const api = axios.create({
   },
 });
 
-// 🔐 Interceptor: agrega el token JWT automáticamente
+//  Interceptor: agrega el token JWT automáticamente
 api.interceptors.request.use(config => {
   const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
   if (token) config.headers.Authorization = `Bearer ${token}`;
+
+   // Si es admin, anteponemos "admin/" a la URL (solo si no está ya)
+    if (role === "admin" && !config.url.startsWith("/admin/")) {
+      config.url = `/admin${config.url}`;
+    }
   return config;
-});
+},
+(error) => Promise.reject(error)
+);
 
-
-// 🧹 Interceptor opcional: maneja errores globalmente
+//  Interceptor opcional: maneja errores globalmente
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     // Si el token expira o es inválido, limpia y redirige
     if (error.response && error.response.status === 401) {
       localStorage.removeItem("token");
-      // 🚨 No navegamos directamente aquí porque no tenemos acceso a useNavigate.
-      // Lo manejás en cada vista con navigate("/login") si es necesario.
+      //  No navegamos directamente aquí porque no tenemos acceso a useNavigate.
+      
     }
     return Promise.reject(error);
   }
