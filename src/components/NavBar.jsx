@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import {Link as RouterScroll} from 'react-scroll'
+
 
 function NavBar() {
   return (
@@ -27,7 +29,7 @@ function NavBar() {
             className="menu menu-sm dropdown-content bg-base-200 rounded-box z-11 mt-3 w-52 p-2 shadow"
           >
             <li>
-              <Link to="/#about">Sobre Nosotros</Link>
+              <RouterScroll to="/about" smooth={true} duration={500}>Sobre Nosotros</RouterScroll>
             </li>
             <li>
               <Link to="/preguntas-frecuentes">Preguntas Frecuentes</Link>

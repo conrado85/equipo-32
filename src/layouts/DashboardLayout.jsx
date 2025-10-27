@@ -24,6 +24,7 @@ export default function DashboardLayout() {
     { path: "/dashboard/video-consultation", label: "Video consulta", icon: Video },
     { path: "/dashboard/treatments", label: "Tratamientos", icon: Pill },
     { path: "/dashboard/my-notes", label: "Mis notas", icon: Notebook },
+    { path: "/dashboard/profile", label: "Perfil", icon: UserRound },
     { path: "/dashboard/settings", label: "Configuraciones", icon: Settings },
   ];
 
@@ -45,15 +46,18 @@ export default function DashboardLayout() {
             {isCollapsed ? <Menu size={20} /> : <X size={20} />}
           </button>
 
+          {/* Navegación */}
           <nav className="flex flex-col gap-2">
             {menuItems.map(({ path, label, icon: Icon }) => (
               <Link
                 key={path}
                 to={path}
                 className={`flex items-center gap-3 mb-2 p-2 rounded-xl transition
-                  ${location.pathname === path
-                    ? "bg-blue-500 text-white font-semibold"
-                    : "hover:bg-blue-100 hover:text-blue-500"}
+                  ${
+                    location.pathname === path
+                      ? "bg-blue-500 text-white font-semibold"
+                      : "hover:bg-blue-100 hover:text-blue-500"
+                  }
                   ${isCollapsed ? "justify-center" : ""}`}
               >
                 <Icon size={20} />
@@ -62,6 +66,7 @@ export default function DashboardLayout() {
             ))}
           </nav>
 
+          {/* Logout */}
           <button
             onClick={() => {
               localStorage.removeItem("token");
@@ -74,7 +79,7 @@ export default function DashboardLayout() {
           </button>
         </aside>
 
-        {/* Sidebar solo íconos en móvil */}
+        {/* Sidebar móvil */}
         <aside className="fixed bottom-0 left-0 w-full bg-white border-t flex justify-around p-2 md:hidden">
           {menuItems.map(({ path, icon: Icon }) => (
             <Link

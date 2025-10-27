@@ -19,6 +19,7 @@ import Appointments from "./pages/dashboard/Appointments";
 import MedicalRecords from "./pages/dashboard/MedicalRecords";
 import VideoConsultation from "./pages/dashboard/VideoConsultation";
 import Treatments from "./pages/dashboard/Treatments";
+import Profile from "./pages/dashboard/Profile"
 import MyNotes from "./pages/dashboard/MyNotes";
 import Settings from "./pages/dashboard/Settings";
 
@@ -46,6 +47,7 @@ function App() {
           <Route path="/dashboard/medical-records" element={<MedicalRecords />} />
           <Route path="/dashboard/video-consultation" element={<VideoConsultation />} />
           <Route path="/dashboard/treatments" element={<Treatments />} />
+          <Route path="/dashboard/profile" element={<Profile />} />
           <Route path="/dashboard/my-notes" element={<MyNotes />} />
           <Route path="/dashboard/settings" element={<Settings />} />
         </Route>

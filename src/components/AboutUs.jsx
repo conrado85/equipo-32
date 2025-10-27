@@ -2,7 +2,7 @@ import imgAboutUs from "../../public/about.jpg";
 
 function AboutUs() {
   return (
-    <section id="about" className="about">
+    <section id="about" name="about" className="about">
       <div className="hero bg-[#D8F2FF] min-h-screen">
         <div className="hero-content flex-col lg:flex-row-reverse lg:justify-end">
           <img
