@@ -27,7 +27,7 @@ function NavBar() {
             className="menu menu-sm dropdown-content bg-base-200 rounded-box z-11 mt-3 w-52 p-2 shadow"
           >
             <li>
-              <Link to="/#about">Sobre Nosotros</Link>
+              <Link to="about-us">Sobre Nosotros</Link>
             </li>
             <li>
               <Link to="/preguntas-frecuentes">Preguntas Frecuentes</Link>
@@ -51,7 +51,9 @@ function NavBar() {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <Link to="/#about">Sobre Nosotros</Link>
+            <a href="#about-us" className="hover:text-primary">
+              Sobre nosotros
+            </a>
           </li>
           <li>
             <Link to="/preguntas-frecuentes">Preguntas Frecuentes</Link>

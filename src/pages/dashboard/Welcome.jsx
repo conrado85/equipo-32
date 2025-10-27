@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
-import { Accessibility } from "lucide-react";
 import Accordion from "../../components/Accordion";
 
 export default function Welcome() {
@@ -50,10 +49,10 @@ export default function Welcome() {
         {user ? (
           <>
             <h1 className="text-4xl font-bold text-teal-700 mb-3">
-              ¡Bienvenido, {user.name}!{console.log(user)}
+              ¡Bienvenido, {user.name}     
             </h1>
             <p className="text-gray-600 text-lg mb-1">
-              Perfil {user.role === "admin" ? " de administrador" : ""}
+              Perfil {user.roles[0].name}
             </p>
             <p className="text-gray-600 text-lg mb-6">
               Accede a tu espacio personal de{" "}

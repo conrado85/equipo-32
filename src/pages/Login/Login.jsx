@@ -17,14 +17,15 @@ function Login() {
 
       // Tu backend devuelve el token como "token"
       const token = respuesta.data.token || respuesta.data.access_token;
-
+       const role = respuesta.data.roles;
       if (!token) {
         setMensaje("❌ No se recibió el token del servidor.");
         return;
       }
 
-      // Guardamos el token en localStorage
+      // Guardamos el token  y el rol en localStorage
       localStorage.setItem("token", token);
+       localStorage.setItem("role", role || "doctor");
 
       setMensaje("✅ Inicio de sesión exitoso");
       // Redirige al dashboard
