@@ -56,7 +56,7 @@ const ContactForm = () => {
   return (
     <section
       aria-label="Formulario de Contacto"
-      className="flex flex-row items-start justify-center pt-30 pb-10 gap-[250px] bg-[#F5F5F5] "
+      className="flex flex-row items-start justify-center pt-30 pb-10 gap-[250px] bg-[#D9F2FF] "
     >
       {/* Imagen a la izquierda */}
       <div className="hidden md:block w-[300px] h-auto self-center">

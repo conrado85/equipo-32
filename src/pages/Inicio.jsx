@@ -9,11 +9,11 @@ function Inicio() {
       <section className="hero" id="hero">
         <Hero />
       </section>
-      <section className="about-us" id="about-us">
-        <AboutUs />
-      </section>
-      <section className="features" id="features">
+        <section className="features" id="features">
         <Features />
+      </section>
+        <section className="about-us" id="about-us">
+        <AboutUs />
       </section>
       <section className="contact-form" id="contact-form">
         <ContactForm />
