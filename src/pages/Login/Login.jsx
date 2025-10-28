@@ -1,7 +1,7 @@
 import img1 from "../../../public/login.jpg";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import api from "../../api/axios";
+import authService from "../../api/authService";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -13,22 +13,14 @@ function Login() {
     setMensaje("");
 
     try {
-      const respuesta = await api.post("/auth/login", { email, password });
-
-      // Tu backend devuelve el token como "token"
-      const token = respuesta.data.token || respuesta.data.access_token;
-
-      if (!token) {
-        setMensaje("❌ No se recibió el token del servidor.");
-        return;
+      const result = await authService.login(email, password);
+      
+      if (result.success) {
+        setMensaje("✅ Inicio de sesión exitoso");
+        window.location.href = "/dashboard/welcome";
+      } else {
+        setMensaje(`❌ ${result.message}`);
       }
-
-      // Guardamos el token en localStorage
-      localStorage.setItem("token", token);
-
-      setMensaje("✅ Inicio de sesión exitoso");
-      // Redirige al dashboard
-      window.location.href = "/dashboard/welcome";
     } catch (error) {
       console.error("Error en el login:", error);
       setMensaje("❌ Credenciales inválidas o error en el servidor.");
@@ -41,13 +33,11 @@ function Login() {
 
   return (
     <div className="min-h-[calc(100vh-64px)] flex">
-      {/* Imagen lateral */}
       <div
         className="hidden md:block md:w-2/3 lg:w-1/2 bg-cover bg-center"
         style={{ backgroundImage: `url(${img1})` }}
       />
 
-      {/* Contenedor del formulario */}
       <div className="flex flex-1 items-center justify-center p-6">
         <div className="w-full max-w-md bg-white/80 backdrop-blur-md rounded-2xl p-6 sm:p-8 shadow-lg">
           <p className="text-center text-gray-600 mb-4 text-lg font-semibold">
@@ -118,7 +108,6 @@ function Login() {
               </Link>
             </p>
 
-            {/* Google Login */}
             <button className="w-full btn bg-white text-black rounded-xl border-[#e5e5e5] mt-4">
               <svg
                 aria-label="Google logo"
@@ -133,7 +122,7 @@ function Login() {
                 <path fill="#fbbc02" d="m90 341a208 200 0 010-171l63 49q-12 37 0 73" />
                 <path fill="#ea4335" d="m153 219c22-69 116-109 179-50l55-54c-78-75-230-72-297 55" />
               </svg>
-              Login with Google
+                Iniciar sesión con Google
             </button>
           </form>
         </div>
