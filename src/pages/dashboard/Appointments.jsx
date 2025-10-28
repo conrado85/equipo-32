@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { appointmentService } from '../../api/appointmentService';
+import { authService } from '../../api/authService';
 import AppointmentForm from '../../components/AppointmentForm';
+import ConfirmModal from '../../components/ConfirmModal';
+import Alert from '../../components/Alert';
 
 const Appointments = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [appointments, setAppointments] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [editingAppointment, setEditingAppointment] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [appointmentToDelete, setAppointmentToDelete] = useState(null);
+  const [alert, setAlert] = useState({ isOpen: false, type: 'success', title: '', message: '' });
   const [pagination, setPagination] = useState({});
   const [patients, setPatients] = useState([]);
   const [doctors, setDoctors] = useState([]);
@@ -24,11 +31,17 @@ const Appointments = () => {
     date_to: '',
     per_page: 4,
     page: 1,
-    sort_by: 'start_date',
-    sort_dir: 'asc'
+    sort_by: 'created_at',
+    sort_dir: 'desc'
   });
 
   useEffect(() => {
+    // Verificar autenticación antes de cargar datos
+    if (!authService.isAuthenticated()) {
+      window.location.href = '/login';
+      return;
+    }
+    
     loadAppointments();
     loadReferenceData();
   }, [filters]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -38,15 +51,18 @@ const Appointments = () => {
       setLoading(true);
       setError(null);
       
+
       const result = await appointmentService.getAllAppointments(filters);
-      
+
+
       if (result.success) {
+        
         setAppointments(result.appointments || []);
         setPagination(result.pagination || {});
       } else {
         setError(result.message);
       }
-    } catch {
+    } catch (error) {
       setError('Error al cargar las citas');
     } finally {
       setLoading(false);
@@ -75,8 +91,8 @@ const Appointments = () => {
       date_to: '',
       per_page: 4,
       page: 1,
-      sort_by: 'start_date',
-      sort_dir: 'asc'
+      sort_by: 'created_at',
+      sort_dir: 'desc'
     });
   };
 
@@ -105,7 +121,96 @@ const Appointments = () => {
   };
 
   const handleCreateAppointment = () => {
+    setEditingAppointment(null);
     setShowForm(true);
+  };
+
+  const handleEditAppointment = async (appointment) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Verificar autenticación antes de hacer la petición
+      if (!authService.isAuthenticated()) {
+        showAlert('error', 'Sesión Expirada', 'Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 2000);
+        return;
+      }
+      
+      // Obtener los detalles completos de la cita
+      const result = await appointmentService.getAppointmentById(appointment.id);
+      
+      if (result.success) {
+        setEditingAppointment(result.data);
+        setShowForm(true);
+      } else {
+        setError(result.message);
+        if (result.message && result.message.includes('401')) {
+          showAlert('error', 'Sesión Expirada', 'Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+          setTimeout(() => {
+            window.location.href = '/login';
+          }, 2000);
+        } else {
+          showAlert('error', 'Error al Cargar', 'No se pudieron cargar los detalles de la cita. Por favor, inténtalo de nuevo.');
+        }
+      }
+    } catch (error) {
+      setError('Error al cargar los detalles de la cita');
+      showAlert('error', 'Error al Cargar', 'Ocurrió un error inesperado al cargar los detalles de la cita.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCloseForm = () => {
+    setShowForm(false);
+    setEditingAppointment(null);
+  };
+
+  const handleDeleteAppointment = (appointment) => {
+    setAppointmentToDelete(appointment);
+    setShowConfirmModal(true);
+  };
+
+  const confirmDeleteAppointment = async () => {
+    if (!appointmentToDelete) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const result = await appointmentService.deleteAppointment(appointmentToDelete.id);
+
+      if (result.success) {
+        setShowConfirmModal(false);
+        setAppointmentToDelete(null);
+        loadAppointments();
+        showAlert('success', 'Cita Eliminada', `La cita #${appointmentToDelete.id} ha sido eliminada exitosamente.`);
+      } else {
+        setError(result.message);
+        showAlert('error', 'Error al Eliminar', result.message || 'No se pudo eliminar la cita. Por favor, inténtalo de nuevo.');
+      }
+    } catch {
+      setError('Error al eliminar la cita');
+      showAlert('error', 'Error al Eliminar', 'Ocurrió un error inesperado al eliminar la cita. Por favor, inténtalo de nuevo.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const cancelDeleteAppointment = () => {
+    setShowConfirmModal(false);
+    setAppointmentToDelete(null);
+  };
+
+  const showAlert = (type, title, message) => {
+    setAlert({ isOpen: true, type, title, message });
+  };
+
+  const closeAlert = () => {
+    setAlert(prev => ({ ...prev, isOpen: false }));
   };
 
   const handleSaveAppointment = async (appointmentData) => {
@@ -113,16 +218,34 @@ const Appointments = () => {
       setLoading(true);
       setError(null);
       
-      const result = await appointmentService.createAppointment(appointmentData);
+      
+      let result;
+      if (editingAppointment) {
+        // Editar cita existente
+        result = await appointmentService.updateAppointment(editingAppointment.id, appointmentData);
+      } else {
+        // Crear nueva cita
+        result = await appointmentService.createAppointment(appointmentData);
+      }
+      
       
       if (result.success) {
-        setShowForm(false);
-        loadAppointments();
+        handleCloseForm();
+        await loadAppointments();
+        const action = editingAppointment ? 'actualizada' : 'creada';
+        const title = editingAppointment ? 'Cita Actualizada' : 'Cita Creada';
+        showAlert('success', title, `La cita ha sido ${action} exitosamente.`);
       } else {
         setError(result.message);
+        const action = editingAppointment ? 'actualizar' : 'crear';
+        const title = editingAppointment ? 'Error al Actualizar' : 'Error al Crear';
+        showAlert('error', title, result.message || `No se pudo ${action} la cita. Por favor, inténtalo de nuevo.`);
       }
-    } catch {
+    } catch (error) {
       setError('Error al guardar la cita');
+      const action = editingAppointment ? 'actualizar' : 'crear';
+      const title = editingAppointment ? 'Error al Actualizar' : 'Error al Crear';
+      showAlert('error', title, `Ocurrió un error inesperado al ${action} la cita. Por favor, inténtalo de nuevo.`);
     } finally {
       setLoading(false);
     }
@@ -213,7 +336,6 @@ const Appointments = () => {
                   <thead className="bg-gray-50">
                     <tr>
                       <th className="px-3 py-2 text-left font-medium text-gray-700">ID</th>
-                      <th className="px-3 py-2 text-left font-medium text-gray-700">Paciente</th>
                       <th className="px-3 py-2 text-left font-medium text-gray-700">Doctor</th>
                       <th className="px-3 py-2 text-left font-medium text-gray-700">Especialidad</th>
                       <th className="px-3 py-2 text-left font-medium text-gray-700">Fecha</th>
@@ -229,9 +351,6 @@ const Appointments = () => {
                           <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
                             #{appointment.id}
                           </span>
-                        </td>
-                        <td className="px-3 py-2 font-medium text-gray-900">
-                          {appointment.patient?.user?.name || 'N/A'}
                         </td>
                         <td className="px-3 py-2 text-gray-600">
                           {appointment.medical_staff?.user?.name ? `Dr. ${appointment.medical_staff.user.name}` : 'Por asignar'}
@@ -273,10 +392,18 @@ const Appointments = () => {
                         </td>
                         <td className="px-3 py-2">
                           <div className="flex gap-1">
-                            <button className="px-2 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition-colors">
+                            <button 
+                              className="px-2 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition-colors"
+                              onClick={() => handleEditAppointment(appointment)}
+                              disabled={loading}
+                            >
                               Editar
                             </button>
-                            <button className="px-2 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors">
+                            <button 
+                              className="px-2 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors"
+                              onClick={() => handleDeleteAppointment(appointment)}
+                              disabled={loading}
+                            >
                               Eliminar
                             </button>
                           </div>
@@ -380,14 +507,38 @@ const Appointments = () => {
 
       {showForm && (
         <AppointmentForm
+          appointment={editingAppointment}
           onSave={handleSaveAppointment}
-          onCancel={() => setShowForm(false)}
+          onCancel={handleCloseForm}
           patients={patients}
           doctors={doctors}
           specialties={specialties}
           isLoading={loading}
         />
       )}
+
+      {showConfirmModal && (
+        <ConfirmModal
+          isOpen={showConfirmModal}
+          onClose={cancelDeleteAppointment}
+          onConfirm={confirmDeleteAppointment}
+          title="Eliminar Cita"
+          message={`¿Estás seguro de que quieres eliminar la cita #${appointmentToDelete?.id} del paciente ${appointmentToDelete?.patient?.user?.name}? Esta acción no se puede deshacer.`}
+          confirmText="Eliminar"
+          cancelText="Cancelar"
+          isLoading={loading}
+          type="danger"
+        />
+      )}
+
+      <Alert
+        isOpen={alert.isOpen}
+        onClose={closeAlert}
+        type={alert.type}
+        title={alert.title}
+        message={alert.message}
+        duration={5000}
+      />
     </div>
   );
 };

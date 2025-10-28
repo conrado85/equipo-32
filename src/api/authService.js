@@ -49,8 +49,18 @@ export const authService = {
     }
   },
 
+  isAuthenticated() {
+    const token = localStorage.getItem('token');
+    return !!token;
+  },
+
+  getToken() {
+    return localStorage.getItem('token');
+  },
+
   logout() {
-    localStorage.removeItem(    'token');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     return {
       success: true,
       message: 'Sesión cerrada exitosamente'

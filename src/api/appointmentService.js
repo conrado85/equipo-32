@@ -4,6 +4,7 @@ export const appointmentService = {
   // Obtener todas las citas con filtros avanzados
   async getAllAppointments(filters = {}) {
     try {
+      
       const params = new URLSearchParams();
       
       // Agregar filtros si están presentes
@@ -13,7 +14,11 @@ export const appointmentService = {
         }
       });
 
-      const response = await api.get(`/admin/appointments?${params.toString()}`);
+      const url = `/admin/appointments?${params.toString()}`;
+
+      const response = await api.get(url);
+      
+      
       return {
         success: true,
         data: response.data.data, // Respuesta completa de Laravel con paginación
@@ -38,7 +43,7 @@ export const appointmentService = {
       const response = await api.get(`/admin/appointments/${id}`);
       return {
         success: true,
-        data: response.data,
+        data: response.data.data, // Los datos de la cita están directamente en response.data.data
         appointment: response.data.data
       };
     } catch (error) {
@@ -49,7 +54,24 @@ export const appointmentService = {
   // Crear una nueva cita
   async createAppointment(appointmentData) {
     try {
-      const response = await api.post('/admin/appointments', appointmentData);
+      
+      // Replicar exactamente el comportamiento del curl
+      const dataToSend = {
+        patient_id: parseInt(appointmentData.patient_id),
+        specialty_id: parseInt(appointmentData.specialty_id),
+        start_date: appointmentData.start_date,
+        end_date: appointmentData.end_date,
+        type: appointmentData.type,
+        status: appointmentData.status,
+        reason: appointmentData.reason,
+        urgent: appointmentData.urgent,
+        priority: parseInt(appointmentData.priority)
+      };
+      
+      
+      const response = await api.post('/admin/appointments', dataToSend);
+      
+      
       return {
         success: true,
         data: response.data,

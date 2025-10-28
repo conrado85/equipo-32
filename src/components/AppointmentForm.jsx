@@ -27,10 +27,53 @@ const AppointmentForm = ({
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
+    
+    let newFormData = {
+      ...formData,
       [name]: type === 'checkbox' ? checked : value
-    }));
+    };
+    
+    // Si se cambia la fecha de inicio, calcular automáticamente la fecha de fin
+    if (name === 'start_date' && value) {
+      // Crear fecha de inicio
+      const startDate = new Date(value);
+      
+      // Agregar exactamente 40 minutos (40 * 60 * 1000 milisegundos)
+      const endDate = new Date(startDate.getTime() + (40 * 60 * 1000));
+      
+      // Formatear para datetime-local en hora LOCAL (no UTC)
+      const year = endDate.getFullYear();
+      const month = String(endDate.getMonth() + 1).padStart(2, '0');
+      const day = String(endDate.getDate()).padStart(2, '0');
+      const hours = String(endDate.getHours()).padStart(2, '0');
+      const minutes = String(endDate.getMinutes()).padStart(2, '0');
+      
+      const formattedEndDate = `${year}-${month}-${day}T${hours}:${minutes}`;
+      
+      newFormData.end_date = formattedEndDate;
+    }
+    
+    // Si se cambia la fecha de fin, verificar que sea posterior a la de inicio
+    if (name === 'end_date' && value && newFormData.start_date) {
+      const startDate = new Date(newFormData.start_date);
+      const endDate = new Date(value);
+      
+      if (endDate <= startDate) {
+        // Si la fecha de fin es anterior o igual a la de inicio, ajustar automáticamente
+        const adjustedEndDate = new Date(startDate.getTime() + (40 * 60 * 1000));
+        
+        // Formatear en hora LOCAL
+        const year = adjustedEndDate.getFullYear();
+        const month = String(adjustedEndDate.getMonth() + 1).padStart(2, '0');
+        const day = String(adjustedEndDate.getDate()).padStart(2, '0');
+        const hours = String(adjustedEndDate.getHours()).padStart(2, '0');
+        const minutes = String(adjustedEndDate.getMinutes()).padStart(2, '0');
+        
+        newFormData.end_date = `${year}-${month}-${day}T${hours}:${minutes}`;
+      }
+    }
+    
+    setFormData(newFormData);
     
     // Limpiar error cuando el usuario empiece a escribir
     if (errors[name]) {
@@ -53,8 +96,21 @@ const AppointmentForm = ({
     if (!formData.end_date) newErrors.end_date = 'Seleccione fecha y hora de fin';
     if (!formData.reason) newErrors.reason = 'Ingrese el motivo de la cita';
     
-    if (new Date(formData.start_date) >= new Date(formData.end_date)) {
-      newErrors.end_date = 'La fecha de fin debe ser posterior a la de inicio';
+    // Validación de fechas
+    if (formData.start_date && formData.end_date) {
+      const startDate = new Date(formData.start_date);
+      const endDate = new Date(formData.end_date);
+      const now = new Date();
+      
+      // Validar que la fecha de inicio sea futura
+      if (startDate <= now) {
+        newErrors.start_date = 'La fecha de inicio debe ser posterior a la fecha y hora actual';
+      }
+      
+      // Validar que la fecha de fin sea posterior a la de inicio
+      if (endDate <= startDate) {
+        newErrors.end_date = 'La fecha de fin debe ser posterior a la de inicio';
+      }
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -149,7 +205,7 @@ const AppointmentForm = ({
                 name="medical_staff_id"
                 value={formData.medical_staff_id}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed bg-white text-gray-900"
                 disabled={isLoading}
               >
                 <option value="" className="text-gray-500">Asignación automática</option>
@@ -168,7 +224,7 @@ const AppointmentForm = ({
                 name="type"
                 value={formData.type}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed bg-white text-gray-900"
                 disabled={isLoading}
               >
                 {typeOptions.map(option => (
@@ -183,35 +239,43 @@ const AppointmentForm = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div className="space-y-2">
               <label htmlFor="start_date" className="block text-sm font-semibold text-gray-900">Fecha y Hora de Inicio *</label>
-              <input
-                type="datetime-local"
-                id="start_date"
-                name="start_date"
-                value={formData.start_date}
-                onChange={handleChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed bg-white text-gray-900 ${
-                  errors.start_date ? 'border-red-500' : 'border-gray-300'
-                }`}
-                disabled={isLoading}
-              />
+                <input
+                  type="datetime-local"
+                  id="start_date"
+                  name="start_date"
+                  value={formData.start_date}
+                  onChange={handleChange}
+                  min={new Date().toISOString().slice(0, 16)}
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed bg-white text-gray-900 ${
+                    errors.start_date ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  disabled={isLoading}
+                />
               {errors.start_date && <span className="text-red-500 text-sm">{errors.start_date}</span>}
+              <p className="text-xs text-gray-500">
+                📅 Seleccione una fecha y hora futura
+              </p>
             </div>
 
-            <div className="space-y-2">
-              <label htmlFor="end_date" className="block text-sm font-semibold text-gray-900">Fecha y Hora de Fin *</label>
-              <input
-                type="datetime-local"
-                id="end_date"
-                name="end_date"
-                value={formData.end_date}
-                onChange={handleChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed bg-white text-gray-900 ${
-                  errors.end_date ? 'border-red-500' : 'border-gray-300'
-                }`}
-                disabled={isLoading}
-              />
-              {errors.end_date && <span className="text-red-500 text-sm">{errors.end_date}</span>}
-            </div>
+              <div className="space-y-2">
+                <label htmlFor="end_date" className="block text-sm font-semibold text-gray-900">Fecha y Hora de Fin *</label>
+                <input
+                  type="datetime-local"
+                  id="end_date"
+                  name="end_date"
+                  value={formData.end_date}
+                  onChange={handleChange}
+                  min={formData.start_date || new Date().toISOString().slice(0, 16)}
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed bg-white text-gray-900 ${
+                    errors.end_date ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  disabled={isLoading}
+                />
+                {errors.end_date && <span className="text-red-500 text-sm">{errors.end_date}</span>}
+                <p className="text-xs text-gray-500">
+                  💡 Se calcula automáticamente agregando 40 minutos a la fecha de inicio
+                </p>
+              </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -222,7 +286,7 @@ const AppointmentForm = ({
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed bg-white text-gray-900"
                 disabled={isLoading}
               >
                 {statusOptions.map(option => (
@@ -240,7 +304,7 @@ const AppointmentForm = ({
                 name="priority"
                 value={formData.priority}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed bg-white text-gray-900"
                 disabled={isLoading}
               >
                 <option value={1} className="text-gray-900">1 - Muy Baja</option>
