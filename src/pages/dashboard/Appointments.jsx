@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { appointmentService } from '../../api/appointmentService';
+import { specialtyService } from '../../api';
 import { authService } from '../../api/authService';
 import AppointmentForm from '../../components/AppointmentForm';
 import ConfirmModal from '../../components/ConfirmModal';
@@ -97,8 +98,7 @@ const Appointments = () => {
   };
 
   const loadReferenceData = async () => {
-    // En una implementación real, estos datos vendrían de endpoints específicos
-    // Por ahora usamos datos mock
+    // Pacientes y doctores: mock por ahora
     setPatients([
       { id: 1, name: 'Juan Pérez', email: 'juan@email.com' },
       { id: 2, name: 'María García', email: 'maria@email.com' },
@@ -111,13 +111,16 @@ const Appointments = () => {
       { id: 3, name: 'Elena Sánchez', specialty: { name: 'Pediatría' } }
     ]);
 
-    setSpecialties([
-      { id: 1, name: 'Cardiología' },
-      { id: 2, name: 'Neurología' },
-      { id: 3, name: 'Pediatría' },
-      { id: 4, name: 'Dermatología' },
-      { id: 5, name: 'Oftalmología' }
-    ]);
+    // Especialidades: desde la API pública
+    try {
+      const res = await specialtyService.listSpecialties({ per_page: 100, sort_by: 'name', sort_dir: 'asc' });
+      if (res.success) {
+        setSpecialties(res.specialties);
+      }
+    } catch {
+      // si falla, mantenemos vacía y el select mostrará opciones vacías
+      setSpecialties([]);
+    }
   };
 
   const handleCreateAppointment = () => {
