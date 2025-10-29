@@ -227,128 +227,195 @@ function MedicalRecords() {
       </div>
 
       {/* Tabla de historiales */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-3 py-2 text-left font-medium text-gray-700">ID</th>
-                <th className="px-3 py-2 text-left font-medium text-gray-700">Fecha</th>
-                <th className="px-3 py-2 text-left font-medium text-gray-700">Diagnóstico</th>
-                <th className="px-3 py-2 text-left font-medium text-gray-700">Acciones</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {loading ? (
-                <tr>
-                  <td colSpan="4" className="px-3 py-8 text-center text-gray-500">
-                    <div className="flex items-center justify-center gap-2">
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-                      Cargando historiales...
-                    </div>
-                  </td>
-                </tr>
-              ) : medicalRecords.length === 0 ? (
-                <tr>
-                  <td colSpan="4" className="px-3 py-8 text-center text-gray-500">
-                    No se encontraron historiales clínicos
-                  </td>
-                </tr>
-              ) : (
-                medicalRecords.map(record => (
-                  <tr key={record.id} className="hover:bg-gray-50">
-                    <td className="px-3 py-2">
-                      <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
-                        #{record.id}
-                      </span>
-                    </td>
-                    <td className="px-3 py-2 text-gray-600">
-                      {record.created_at ? new Date(record.created_at).toLocaleDateString('es-ES', {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      }) : 'N/A'}
-                    </td>
-                    <td className="px-3 py-2">
-                      {record.assessment ? (
-                        <span className="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
-                          {record.assessment.length > 30 ? `${record.assessment.substring(0, 30)}...` : record.assessment}
-                        </span>
-                      ) : (
-                        <span className="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">
-                          Sin diagnóstico
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-3 py-2">
-                      <div className="flex gap-1">
-                        <button 
-                          className="px-2 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition-colors"
-                          onClick={() => handleEditRecord(record)}
-                          disabled={loading}
-                        >
-                          Editar
-                        </button>
-                        <button 
-                          className="px-2 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors"
-                          onClick={() => handleDeleteRecord(record)}
-                          disabled={loading}
-                        >
-                          Eliminar
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Paginación */}
-        {pagination.last_page > 1 && (
-          <div className="px-3 py-3 bg-gray-50 border-t border-gray-200">
-            <div className="flex items-center justify-between">
-              <div className="text-sm text-gray-700">
-                Mostrando {pagination.from} a {pagination.to} de {pagination.total} historiales
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => handleFilterChange('page', pagination.current_page - 1)}
-                  disabled={pagination.current_page <= 1}
-                  className="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  ←
-                </button>
-                
-                {Array.from({ length: Math.min(5, pagination.last_page) }, (_, i) => {
-                  const page = i + 1;
-                  return (
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-16 text-gray-500">
+            <div className="w-10 h-10 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin mb-4"></div>
+            <p>Cargando historiales...</p>
+          </div>
+        ) : (
+          <div className="p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-semibold text-gray-800">
+                Total de historiales: {pagination.total || medicalRecords.length}
+              </h3>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    placeholder="Buscar..."
+                    value={filters.q}
+                    onChange={(e) => handleFilterChange('q', e.target.value)}
+                    className="px-3 py-2 border border-gray-300 rounded-md text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                  />
+                  {hasActiveFilters && (
                     <button
-                      key={page}
-                      onClick={() => handleFilterChange('page', page)}
-                      className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                        page === pagination.current_page
-                          ? 'bg-blue-600 text-white shadow-sm'
-                          : 'text-gray-700 bg-white border border-gray-300 hover:bg-gray-50'
-                      }`}
+                      onClick={handleClearFilters}
+                      className="px-3 py-2 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors shadow-sm"
+                      title="Limpiar filtros"
                     >
-                      {page}
+                      ✕ Limpiar
                     </button>
-                  );
-                })}
-                
-                <button
-                  onClick={() => handleFilterChange('page', pagination.current_page + 1)}
-                  disabled={pagination.current_page >= pagination.last_page}
-                  className="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  →
-                </button>
+                  )}
+                </div>
+                {pagination.total && (
+                  <span className="text-sm text-gray-500">
+                    Página {pagination.current_page} de {pagination.last_page}
+                  </span>
+                )}
               </div>
             </div>
+
+            {medicalRecords.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-3 py-2 text-left font-medium text-gray-700">ID</th>
+                      <th className="px-3 py-2 text-left font-medium text-gray-700">Fecha</th>
+                      <th className="px-3 py-2 text-left font-medium text-gray-700">Diagnóstico</th>
+                      <th className="px-3 py-2 text-left font-medium text-gray-700">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {medicalRecords.map(record => (
+                      <tr key={record.id} className="hover:bg-gray-50">
+                        <td className="px-3 py-2">
+                          <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                            #{record.id}
+                          </span>
+                        </td>
+                        <td className="px-3 py-2 text-gray-600">
+                          {record.created_at ? new Date(record.created_at).toLocaleDateString('es-ES', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          }) : 'N/A'}
+                        </td>
+                        <td className="px-3 py-2">
+                          {record.assessment ? (
+                            <span className="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
+                              {record.assessment.length > 30 ? `${record.assessment.substring(0, 30)}...` : record.assessment}
+                            </span>
+                          ) : (
+                            <span className="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">
+                              Sin diagnóstico
+                            </span>
+                          )}
+                        </td>
+                        <td className="px-3 py-2">
+                          <div className="flex gap-1">
+                            <button 
+                              className="px-2 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition-colors"
+                              onClick={() => handleEditRecord(record)}
+                              disabled={loading}
+                            >
+                              Editar
+                            </button>
+                            <button 
+                              className="px-2 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors"
+                              onClick={() => handleDeleteRecord(record)}
+                              disabled={loading}
+                            >
+                              Eliminar
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="text-center py-8 text-gray-500">
+                <p className="text-lg">No hay historiales disponibles</p>
+                <p className="text-sm mt-2">Los historiales aparecerán aquí una vez que se carguen desde el servidor</p>
+              </div>
+            )}
+
+            {/* Paginación */}
+            {pagination.total && pagination.last_page > 1 && (
+              <div className="flex justify-between items-center mt-4 px-6 py-3 bg-gray-50 border-t border-gray-200">
+                <div className="text-sm text-gray-700">
+                  Mostrando {pagination.from || 0} a {pagination.to || 0} de {pagination.total || 0} historiales
+                </div>
+                <div className="flex items-center gap-2">
+                  {/* Botón Primera página */}
+                  {pagination.current_page > 3 && (
+                    <>
+                      <button
+                        onClick={() => handleFilterChange('page', 1)}
+                        disabled={loading}
+                        className="px-3 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      >
+                        1
+                      </button>
+                      {pagination.current_page > 4 && (
+                        <span className="px-2 text-gray-500 font-medium">...</span>
+                      )}
+                    </>
+                  )}
+                  
+                  {/* Botón Anterior */}
+                  <button
+                    onClick={() => handleFilterChange('page', Math.max(1, pagination.current_page - 1))}
+                    disabled={pagination.current_page === 1 || loading}
+                    className="px-3 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    ←
+                  </button>
+                  
+                  {/* Números de página alrededor de la actual */}
+                  {Array.from({ length: Math.min(3, pagination.last_page) }, (_, i) => {
+                    const startPage = Math.max(1, pagination.current_page - 1);
+                    const pageNum = startPage + i;
+                    if (pageNum > pagination.last_page) return null;
+                    
+                    return (
+                      <button
+                        key={pageNum}
+                        onClick={() => handleFilterChange('page', pageNum)}
+                        disabled={loading}
+                        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+                          pageNum === pagination.current_page
+                            ? 'bg-blue-600 text-white border border-blue-600 shadow-sm'
+                            : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400'
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  })}
+                  
+                  {/* Botón Siguiente */}
+                  <button
+                    onClick={() => handleFilterChange('page', Math.min(pagination.last_page, pagination.current_page + 1))}
+                    disabled={pagination.current_page === pagination.last_page || loading}
+                    className="px-3 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    →
+                  </button>
+                  
+                  {/* Botón Última página */}
+                  {pagination.current_page < pagination.last_page - 2 && (
+                    <>
+                      {pagination.current_page < pagination.last_page - 3 && (
+                        <span className="px-2 text-gray-500 font-medium">...</span>
+                      )}
+                      <button
+                        onClick={() => handleFilterChange('page', pagination.last_page)}
+                        disabled={loading}
+                        className="px-3 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      >
+                        {pagination.last_page}
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
