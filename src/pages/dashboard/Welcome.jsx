@@ -11,7 +11,7 @@ export default function Welcome() {
     const fetchUser = async () => {
       try {
         const result = await authService.getCurrentUser();
-        console.log(result);
+       
         if (result.success && result.user) {
           setUser(result.user);
         } else {
