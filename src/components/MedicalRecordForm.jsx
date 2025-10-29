@@ -341,3 +341,5 @@ function MedicalRecordForm({ isOpen, onClose, onSave, editingRecord, loading }) 
 }
 
 export default MedicalRecordForm;
+
+
