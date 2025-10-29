@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import imagenDoctor from "../assets/hermosa-joven-doctora-mirando-camara-oficina.svg"; // Asegúrate de importar correctamente
+import imagenDoctor from "../assets/hermosa-joven-doctora-mirando-camara-oficina.svg";
 import "@fontsource/nunito/600.css";
 
 const ContactForm = () => {
@@ -17,13 +17,11 @@ const ContactForm = () => {
   };
 
   const validarTelefono = (telefono) => {
-    // Solo dígitos
-    const longitudValida = telefono.length >= 7 && telefono.length <= 15; // Rango de caracteres
-
-    const formatoPermitido = /^[\d+-]+$/.test(telefono); // Al menos uno de los dos símbolos
-
+    const longitudValida = telefono.length >= 7 && telefono.length <= 15;
+    const formatoPermitido = /^[\d+-]+$/.test(telefono);
     return longitudValida && formatoPermitido;
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const { nombre, email, telefono, mensaje } = formData;
@@ -39,7 +37,7 @@ const ContactForm = () => {
     }
     if (!validarTelefono(telefono)) {
       setError(
-        "Debe contener solo números y/o el simbolo + o -, tener entre 7 y 15 caracteres ."
+        "El teléfono debe contener solo números y/o el símbolo + o -, tener entre 7 y 15 caracteres."
       );
       return;
     }
@@ -56,89 +54,122 @@ const ContactForm = () => {
   return (
     <section
       aria-label="Formulario de Contacto"
-      className="flex flex-row items-start justify-center pt-30 pb-10 gap-[250px] bg-[#F5F5F5] "
+      className="py-20 bg-gradient-to-br from-gray-50 to-blue-50"
     >
-      {/* Imagen a la izquierda */}
-      <div className="hidden md:block w-[300px] h-auto self-center">
-        <img
-          src={imagenDoctor}
-          alt="Profesional de salud"
-          className="w-[368px] h-auto object-cover rounded-lg"
-        />
-      </div>
+      <div className="container mx-auto px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Imagen */}
+            <div className="order-2 lg:order-1">
+              <img
+                src={imagenDoctor}
+                alt="Profesional de salud"
+                className="w-full h-auto rounded-3xl shadow-2xl transform hover:scale-105 transition-transform duration-300"
+              />
+            </div>
 
-      {/* Formulario */}
-      <div className="w-[464px] flex flex-col gap-[40px] ">
-        <div className="block md:hidden w-[150px] h-auto self-center">
-          <img
-            src={imagenDoctor}
-            alt="Profesional de salud"
-            className="w-[368px] h-auto object-cover rounded-lg"
-          />
+            {/* Formulario */}
+            <div className="order-1 lg:order-2">
+              <div className="bg-white rounded-3xl shadow-xl p-8 lg:p-12">
+                <div className="text-center mb-8">
+                  <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">
+                    Descubre más sobre <br /> 
+                    <span className="text-blue-600">nuestras soluciones</span>
+                  </h2>
+                  <div className="w-20 h-1 bg-blue-600 rounded-full mx-auto mb-6"></div>
+                  <p className="text-gray-600 text-lg">
+                    ¿Tienes preguntas? Estamos aquí para ayudarte a encontrar la mejor solución para tu clínica.
+                  </p>
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Nombre completo
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Tu nombre completo"
+                        value={formData.nombre}
+                        onChange={(e) =>
+                          setFormData({ ...formData, nombre: e.target.value })
+                        }
+                        className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Correo electrónico
+                      </label>
+                      <input
+                        type="email"
+                        placeholder="tu@email.com"
+                        value={formData.email}
+                        onChange={(e) =>
+                          setFormData({ ...formData, email: e.target.value })
+                        }
+                        className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Teléfono
+                    </label>
+                    <input
+                      type="tel"
+                      placeholder="+1 (555) 123-4567"
+                      value={formData.telefono}
+                      onChange={(e) =>
+                        setFormData({ ...formData, telefono: e.target.value })
+                      }
+                      className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Mensaje
+                    </label>
+                    <textarea
+                      placeholder="Cuéntanos sobre tu clínica y cómo podemos ayudarte..."
+                      value={formData.mensaje}
+                      onChange={(e) =>
+                        setFormData({ ...formData, mensaje: e.target.value })
+                      }
+                      rows={4}
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  >
+                    {enviado ? "✓ Mensaje enviado" : "Enviar mensaje"}
+                  </button>
+
+                  {error && (
+                    <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+                      <p className="text-red-600 font-medium text-sm">{error}</p>
+                    </div>
+                  )}
+                  
+                  {enviado && (
+                    <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+                      <p className="text-green-600 font-medium text-sm">
+                        ¡Mensaje enviado con éxito! Te contactaremos pronto.
+                      </p>
+                    </div>
+                  )}
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <h2 className="font-[nunito]  text-[36px] leading-[48px] text-center text-[#080808] my-[0] ">
-          Descubre más sobre <br /> nuestras soluciones!
-        </h2>
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-[30px] items-center"
-        >
-          <input
-            type="text"
-            placeholder="Nombre completo"
-            value={formData.nombre}
-            onChange={(e) =>
-              setFormData({ ...formData, nombre: e.target.value })
-            }
-            className="w-full h-[50px] bg-[transparent] border border-[#717171] rounded-[15px] px-[17px] font-[nunito] font-semibold text-[16px] text-[#717171]"
-          />
-
-          <input
-            type="email"
-            placeholder="Correo electrónico"
-            value={formData.email}
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
-            className="w-full h-[50px] bg-[transparent] border border-[#717171] rounded-[15px] px-[17px] font-[nunito] text-[16px] text-[#717171]"
-          />
-
-          <input
-            type="tel"
-            placeholder="Teléfono"
-            value={formData.telefono}
-            onChange={(e) =>
-              setFormData({ ...formData, telefono: e.target.value })
-            }
-            className="w-full h-[50px] bg-[transparent] border border-[#717171] rounded-[15px] px-[17px] font-[nunito] text-[16px] text-[#717171]"
-          />
-
-          <textarea
-            placeholder="Mensaje"
-            value={formData.mensaje}
-            onChange={(e) =>
-              setFormData({ ...formData, mensaje: e.target.value })
-            }
-            className="w-full h-[50px] bg-[transparent] border border-[#717171] rounded-[15px] px-[17px] py-[10px] font-[nunito] text-[16px] text-[#717171] resize-none"
-          />
-
-          <button
-            type="submit"
-            className="border-none flex justify-center items-center w-[191px] h-[50px] bg-gradient-to-b from-[#2392F7] to-[#1275E3] rounded-[15px] font-[nunito] text-[18px] text-[white] leading-[24px] py-[0]"
-          >
-            Enviar mensaje
-          </button>
-
-          {error && (
-            <p className="text-[red] font-nunito text-sm mt-[0]">{error}</p>
-          )}
-          {enviado && (
-            <p className="text-[green] font-nunito text-sm mt-[0]">
-              ¡Mensaje enviado con éxito!
-            </p>
-          )}
-        </form>
       </div>
     </section>
   );

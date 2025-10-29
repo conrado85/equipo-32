@@ -36,10 +36,15 @@ function NavBarPrivate() {
               </a>
             </li>
             <li>
-              <a>Settings</a>
+              <a   onClick={() => {
+              window.location.href = "/dashboard/settings";
+            }}>Settings</a>
             </li>
             <li>
-              <a>Logout</a>
+              <a  onClick={() => {
+              localStorage.removeItem("token");
+              window.location.href = "/login";
+            }} >Logout</a>
             </li>
           </ul>
         </div>

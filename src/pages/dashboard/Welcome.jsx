@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import api from "../../api/axios";
+import authService from "../../api/authService";
 import { Accessibility } from "lucide-react";
 import Accordion from "../../components/Accordion";
 
@@ -10,18 +10,12 @@ export default function Welcome() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const token = localStorage.getItem("token");
-        if (!token) throw new Error("Token no encontrado");
-
-        const { data } = await api.get("/auth/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        // Tu backend devuelve: { success, message, user }
-        if (data.success && data.user) {
-          setUser(data.user);
+        const result = await authService.getCurrentUser();
+        console.log(result);
+        if (result.success && result.user) {
+          setUser(result.user);
         } else {
-          console.error("Estructura inesperada en la respuesta:", data);
+          console.error("Error al obtener los datos del usuario:", result.message);
         }
       } catch (error) {
         console.error("Error al obtener los datos del usuario:", error);
@@ -50,10 +44,10 @@ export default function Welcome() {
         {user ? (
           <>
             <h1 className="text-4xl font-bold text-teal-700 mb-3">
-              ¡Bienvenido, {user.name}!{console.log(user)}
+              ¡Bienvenido, {user.name}     
             </h1>
             <p className="text-gray-600 text-lg mb-1">
-              Perfil {user.role === "admin" ? " de administrador" : ""}
+              Perfil {user.roles[0].name}
             </p>
             <p className="text-gray-600 text-lg mb-6">
               Accede a tu espacio personal de{" "}

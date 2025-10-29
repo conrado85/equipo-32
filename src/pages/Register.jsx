@@ -1,6 +1,7 @@
 import imgRegister from '../assets/paciente-femenina-que-asiste-una-consulta-virtual 2.png';
 import { useState } from 'react';
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+import authService from '../api/authService';
 
 const Register = () => {
   const [userData, setUserData] = useState({
@@ -44,27 +45,18 @@ const Register = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
-      });
-
-      let data;
-      try {
-        data = await response.json();
-      } catch {
-        data = null;
-      }
-
-      if (response.ok) {
+      const result = await authService.register(userData);
+      
+      if (result.success) {
         setSuccess("✅ ¡Usuario registrado con éxito!");
         setUserData({ name: "", email: "", password: "", password_confirmation: "" });
         setErrors({});
-      } else if (response.status === 422 && data?.errors) {
-        setErrors(data.errors);
       } else {
-        setErrors({ general: data?.message || "Error al registrar el usuario" });
+        if (result.errors) {
+          setErrors(result.errors);
+        } else {
+          setErrors({ general: result.message });
+        }
       }
     } catch (error) {
       console.error("❌ Error en la petición:", error);
@@ -87,13 +79,13 @@ const Register = () => {
       
       <div className="w-full md:w-1/2 flex items-center justify-center p-8">
         <div className="w-full max-w-md bg-white shadow-md rounded-[15px] p-6">
-          <h1 className="text-2xl font-semibold text-center mb-4">Crea una cuenta</h1>
+          <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">Crea una cuenta</h1>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="name" className="block text-left font-medium mb-1">Nombre</label>
+              <label htmlFor="name" className="block text-left font-semibold mb-2 text-gray-700">Nombre</label>
               <input
-                className="w-full border border-[#F5F5F5] rounded-[15px] p-2"
+                className="w-full border-2 border-gray-400 rounded-[15px] p-3 bg-gray-50 focus:border-[#2392F7] focus:bg-white focus:outline-none transition-all shadow-sm placeholder-gray-500"
                 type="text"
                 id="name"
                 name="name"
@@ -105,9 +97,9 @@ const Register = () => {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-left font-medium mb-1">Email</label>
+              <label htmlFor="email" className="block text-left font-semibold mb-2 text-gray-700">Email</label>
               <input
-                className="w-full border border-[#F5F5F5] rounded-[15px] p-2"
+                className="w-full border-2 border-gray-400 rounded-[15px] p-3 bg-gray-50 focus:border-[#2392F7] focus:bg-white focus:outline-none transition-all shadow-sm placeholder-gray-500"
                 type="email"
                 id="email"
                 name="email"
@@ -119,9 +111,9 @@ const Register = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-left font-medium mb-1">Contraseña</label>
+              <label htmlFor="password" className="block text-left font-semibold mb-2 text-gray-700">Contraseña</label>
               <input
-                className="w-full border border-[#F5F5F5] rounded-[15px] p-2"
+                className="w-full border-2 border-gray-400 rounded-[15px] p-3 bg-gray-50 focus:border-[#2392F7] focus:bg-white focus:outline-none transition-all shadow-sm placeholder-gray-500"
                 type="password"
                 id="password"
                 name="password"
@@ -133,9 +125,9 @@ const Register = () => {
             </div>
 
             <div>
-              <label htmlFor="password_confirmation" className="block text-left font-medium mb-1">Confirmar contraseña</label>
+              <label htmlFor="password_confirmation" className="block text-left font-semibold mb-2 text-gray-700">Confirmar contraseña</label>
               <input
-                className="w-full border border-[#F5F5F5] rounded-[15px] p-2"
+                className="w-full border-2 border-gray-400 rounded-[15px] p-3 bg-gray-50 focus:border-[#2392F7] focus:bg-white focus:outline-none transition-all shadow-sm placeholder-gray-500"
                 type="password"
                 id="password_confirmation"
                 name="password_confirmation"
@@ -156,11 +148,11 @@ const Register = () => {
               {loading ? "Enviando..." : "Registrar"}
             </button>
 
-            <p className="text-center text-sm mt-3">
+            <p className="text-center text-sm mt-4 text-gray-600">
               ¿Ya tienes una cuenta?{" "}
               <Link
                 to="/login"
-                className="text-[#2392F7] hover:text-[#1d7de0] font-medium"
+                className="text-[#2392F7] hover:text-[#1d7de0] font-semibold"
               >
                 Inicia sesión
               </Link>

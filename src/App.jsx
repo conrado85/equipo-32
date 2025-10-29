@@ -11,7 +11,10 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import Home from "./pages/Inicio";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register";
-import NoTFound from "./pages/NoTFound";
+import NotFound from "./pages/NotFound";
+import PreguntasFrecuentes from "./pages/PreguntasFrecuentes";
+import Soluciones from "./pages/Soluciones";
+import Contacto from "./pages/Contacto";
 
 // Páginas del dashboard (privadas)
 import Welcome from "./pages/dashboard/Welcome";
@@ -31,6 +34,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/preguntas-frecuentes" element={<PreguntasFrecuentes />} />
+          <Route path="/soluciones" element={<Soluciones />} />
+          <Route path="/contacto" element={<Contacto />} />
         </Route>
 
         {/* RUTAS PRIVADAS (Dashboard) */}
@@ -51,7 +57,7 @@ function App() {
         </Route>
 
         {/* Redirección por defecto */}
-        <Route path="*" element={<NoTFound />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   )
