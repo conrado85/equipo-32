@@ -1,5 +1,5 @@
 import { useState } from "react";
-import api from "../api/axios";
+import authService from "../api/authService";
 
 export default function Accordion() {
   const [userData, setUserData] = useState(null);
@@ -9,18 +9,13 @@ export default function Accordion() {
   const handleOpenDatos = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("token");
-
-      if (!token) throw new Error("Token no encontrado");
-
-      const { data } = await api.get("/auth/me", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (data.success && data.user) {
-        setUserData(data.user);
+      
+      const result = await authService.getCurrentUser();
+      
+      if (result.success && result.user) {
+        setUserData(result.user);
       } else {
-        console.error("Respuesta inesperada del backend:", data);
+        console.error("Error al obtener los datos del usuario:", result.message);
       }
     } catch (error) {
       console.error("Error al obtener los datos del usuario:", error);

@@ -32,8 +32,9 @@ api.interceptors.response.use(
     // Si el token expira o es inválido, limpia y redirige
     if (error.response && error.response.status === 401) {
       localStorage.removeItem("token");
-      //  No navegamos directamente aquí porque no tenemos acceso a useNavigate.
-      
+      localStorage.removeItem("user");
+      // Redirigir al login
+      window.location.href = "/login";
     }
     return Promise.reject(error);
   }
