@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
-<<<<<<< HEAD
-import api from "../../api/axios";
-=======
 import authService from "../../api/authService";
 import { Accessibility } from "lucide-react";
->>>>>>> fix-deploy
 import Accordion from "../../components/Accordion";
 
 export default function Welcome() {
@@ -15,7 +11,7 @@ export default function Welcome() {
     const fetchUser = async () => {
       try {
         const result = await authService.getCurrentUser();
-        
+        console.log(result);
         if (result.success && result.user) {
           setUser(result.user);
         } else {

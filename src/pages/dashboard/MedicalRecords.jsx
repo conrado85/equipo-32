@@ -1,12 +1,7 @@
-<<<<<<< HEAD
-import React from 'react'
-import Table from '../../components/Table'
-=======
 import React, { useState, useEffect } from 'react';
 import { medicalRecordService } from '../../api';
 import { Plus } from 'lucide-react';
 import MedicalRecordForm from '../../components/MedicalRecordForm';
->>>>>>> fix-deploy
 
 function MedicalRecords() {
   const [medicalRecords, setMedicalRecords] = useState([]);
@@ -179,11 +174,6 @@ function MedicalRecords() {
   const hasActiveFilters = filters.q;
 
   return (
-<<<<<<< HEAD
-    <div>
-      <h1 className='text-3xl font-bold m-4 text-center'> Historial Clinico</h1>
-      <Table />
-=======
     <div className="p-6">
       {/* Header */}
       <div className="mb-6">
@@ -462,7 +452,6 @@ function MedicalRecords() {
         editingRecord={editingRecord}
         loading={loading}
       />
->>>>>>> fix-deploy
     </div>
   );
 }
