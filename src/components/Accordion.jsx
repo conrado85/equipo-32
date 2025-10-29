@@ -25,18 +25,18 @@ export default function Accordion() {
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 w-full max-w-md">
       {/* --- D A T O S  P E R S O N A L E S --- */}
-      <div className="collapse collapse-arrow bg-transparent border border-base-300">
+      <div className="collapse collapse-arrow bg-white border border-gray-200 rounded-lg shadow-sm">
         <input
           type="radio"
           name="my-accordion-2"
           onChange={handleOpenDatos}
         />
-        <div className="collapse-title font-semibold">
+        <div className="collapse-title font-semibold text-gray-800">
           Datos personales
         </div>
-        <div className="collapse-content text-sm">
+        <div className="collapse-content text-sm text-gray-700">
           {loading ? (
             <p className="text-gray-500 animate-pulse">Cargando datos...</p>
           ) : userData ? (
@@ -51,32 +51,32 @@ export default function Accordion() {
               )}
             </div>
           ) : (
-            <p className="text-gray-400">No se encontraron datos.</p>
+            <p className="text-gray-500">No se encontraron datos.</p>
           )}
         </div>
       </div>
 
       {/* --- S E G U R I D A D --- */}
-      <div className="collapse collapse-arrow bg-transparent border border-base-300">
+      <div className="collapse collapse-arrow bg-white border border-gray-200 rounded-lg shadow-sm">
         <input type="radio" name="my-accordion-2" />
-        <div className="collapse-title font-semibold">Seguridad</div>
-        <div className="collapse-content text-sm">Próximamente.</div>
+        <div className="collapse-title font-semibold text-gray-800">Seguridad</div>
+        <div className="collapse-content text-sm text-gray-700">Próximamente.</div>
       </div>
 
       {/* --- E Q U I P O  M É D I C O --- */}
-      <div className="collapse collapse-arrow bg-transparent border border-base-300">
+      <div className="collapse collapse-arrow bg-white border border-gray-200 rounded-lg shadow-sm">
         <input type="radio" name="my-accordion-2" />
-        <div className="collapse-title font-semibold">
+        <div className="collapse-title font-semibold text-gray-800">
           Comunicate con tu equipo médico
         </div>
-        <div className="collapse-content text-sm">Próximamente.</div>
+        <div className="collapse-content text-sm text-gray-700">Próximamente.</div>
       </div>
 
       {/* --- A Y U D A --- */}
-      <div className="collapse collapse-arrow bg-transparent border border-base-300">
+      <div className="collapse collapse-arrow bg-white border border-gray-200 rounded-lg shadow-sm">
         <input type="radio" name="my-accordion-2" />
-        <div className="collapse-title font-semibold">Ayuda</div>
-        <div className="collapse-content text-sm">Próximamente.</div>
+        <div className="collapse-title font-semibold text-gray-800">Ayuda</div>
+        <div className="collapse-content text-sm text-gray-700">Próximamente.</div>
       </div>
     </div>
   );
