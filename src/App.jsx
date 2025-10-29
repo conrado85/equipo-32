@@ -15,6 +15,7 @@ import NotFound from "./pages/NotFound";
 import PreguntasFrecuentes from "./pages/PreguntasFrecuentes";
 import Soluciones from "./pages/Soluciones";
 import Contacto from "./pages/Contacto";
+import Team from "./pages/Team";
 
 // Páginas del dashboard (privadas)
 import Welcome from "./pages/dashboard/Welcome";
@@ -37,6 +38,7 @@ function App() {
           <Route path="/preguntas-frecuentes" element={<PreguntasFrecuentes />} />
           <Route path="/soluciones" element={<Soluciones />} />
           <Route path="/contacto" element={<Contacto />} />
+          <Route path="/team" element={<Team />} />
         </Route>
 
         {/* RUTAS PRIVADAS (Dashboard) */}

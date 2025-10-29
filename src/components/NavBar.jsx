@@ -26,7 +26,7 @@ function NavBar() {
             className="menu menu-sm dropdown-content bg-white rounded-box z-50 mt-3 w-52 p-2 shadow-xl border border-gray-100"
           >
             <li>
-              <Link to="/#about" className="hover:bg-blue-50 hover:text-blue-600">Sobre Nosotros</Link>
+              <Link to="/team" className="hover:bg-blue-50 hover:text-blue-600">Sobre Nosotros</Link>
             </li>
             <li>
               <Link to="/preguntas-frecuentes" className="hover:bg-blue-50 hover:text-blue-600">Preguntas Frecuentes</Link>
@@ -53,7 +53,7 @@ function NavBar() {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 space-x-6">
           <li>
-            <Link to="/#about" className="text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg px-4 py-2 transition-colors font-medium text-base">
+            <Link to="/team" className="text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg px-4 py-2 transition-colors font-medium text-base">
               Sobre Nosotros
             </Link>
           </li>
