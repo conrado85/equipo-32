@@ -15,14 +15,15 @@ import NotFound from "./pages/NotFound";
 import PreguntasFrecuentes from "./pages/PreguntasFrecuentes";
 import Soluciones from "./pages/Soluciones";
 import Contacto from "./pages/Contacto";
+import Team from "./pages/Team";
 
 // Páginas del dashboard (privadas)
 import Welcome from "./pages/dashboard/Welcome";
 import Appointments from "./pages/dashboard/Appointments";
 import MedicalRecords from "./pages/dashboard/MedicalRecords";
-import VideoConsultation from "./pages/dashboard/VideoConsultation";
-import Treatments from "./pages/dashboard/Treatments";
-import MyNotes from "./pages/dashboard/MyNotes";
+import Users from "./pages/dashboard/Users";
+import Doctors from "./pages/dashboard/Doctors";
+import Patients from "./pages/dashboard/Patients";
 import Settings from "./pages/dashboard/Settings";
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
           <Route path="/preguntas-frecuentes" element={<PreguntasFrecuentes />} />
           <Route path="/soluciones" element={<Soluciones />} />
           <Route path="/contacto" element={<Contacto />} />
+          <Route path="/team" element={<Team />} />
         </Route>
 
         {/* RUTAS PRIVADAS (Dashboard) */}
@@ -50,9 +52,9 @@ function App() {
           <Route path="/dashboard/welcome" element={<Welcome />} />
           <Route path="/dashboard/appointments" element={<Appointments />} />
           <Route path="/dashboard/medical-records" element={<MedicalRecords />} />
-          <Route path="/dashboard/video-consultation" element={<VideoConsultation />} />
-          <Route path="/dashboard/treatments" element={<Treatments />} />
-          <Route path="/dashboard/my-notes" element={<MyNotes />} />
+          <Route path="/dashboard/users" element={<Users />} />
+          <Route path="/dashboard/doctors" element={<Doctors />} />
+          <Route path="/dashboard/patients" element={<Patients />} />
           <Route path="/dashboard/settings" element={<Settings />} />
         </Route>
 
