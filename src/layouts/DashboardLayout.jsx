@@ -67,7 +67,7 @@ export default function DashboardLayout() {
               localStorage.removeItem("token");
               window.location.href = "/login";
             }}
-            className={`mt-auto bg-red-500 hover:bg-red-600 p-2 rounded-xl transition text-amber-50 font-semibold
+            className={`mt-auto bg-transparent hover:bg-red-600 hover:text-white p-2 rounded-xl transition text-red-600 border border-red-600 font-semibold
               ${isCollapsed ? "text-center text-sm" : ""}`}
           >
             {isCollapsed ? "⎋" : "Cerrar sesión"}

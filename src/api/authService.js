@@ -14,27 +14,32 @@ export const authService = {
     }
   },
 
-  async login(email, password) {
-    try {
-      const response = await api.post('/auth/login', { email, password });
-      const token = response.data.token || response.data.access_token;
-      
-      if (!token) {
-        throw new Error('No se recibió el token del servidor');
-      }
+ async login(email, password) {
+  try {
+    const response = await api.post('/auth/login', { email, password });
+    const token = response.data.token || response.data.access_token;
 
-      localStorage.setItem('token', token);
-      
-      return {
-        success: true,
-        data: response.data,
-        token: token,
-        message: 'Inicio de sesión exitoso'
-      };
-    } catch (error) {
-      return this.handleError(error);
+    if (!token) {
+      throw new Error('No se recibió el token del servidor');
     }
-  },
+
+    // ✅ Guarda token y rol del usuario
+    localStorage.setItem('token', token);
+
+    if (response.data.user && response.data.user.role) {
+      localStorage.setItem('role', response.data.user.role);
+    }
+
+    return {
+      success: true,
+      data: response.data,
+      token: token,
+      message: 'Inicio de sesión exitoso',
+    };
+  } catch (error) {
+    return this.handleError(error);
+  }
+},
 
   async getCurrentUser() {
     try {

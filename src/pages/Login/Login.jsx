@@ -1,12 +1,14 @@
 import img1 from "../../../public/login.jpg";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import authService from "../../api/authService";
+import { useNavigate } from "react-router-dom";
+import { authService } from "../../api/authService";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mensaje, setMensaje] = useState("");
+  const navigate = useNavigate();
 
   const manejarLogin = async (e) => {
     e.preventDefault();
@@ -14,10 +16,25 @@ function Login() {
 
     try {
       const result = await authService.login(email, password);
-      
+
       if (result.success) {
+        const role = result.data.role;
+
+        // ✅ Guarda el rol para las rutas protegidas
+        if (role) {
+          localStorage.setItem("role", role);
+        }
+
         setMensaje("✅ Inicio de sesión exitoso");
-        window.location.href = "/dashboard/welcome";
+
+        // 🔁 Redirección inteligente según el rol
+        if (role === "patient") {
+          navigate("/user/profile", { replace: true });
+        } else if (role === "doctor" || role === "admin") {
+          navigate("/dashboard/welcome", { replace: true });
+        } else {
+          navigate("/", { replace: true });
+        }
       } else {
         setMensaje(`❌ ${result.message}`);
       }
