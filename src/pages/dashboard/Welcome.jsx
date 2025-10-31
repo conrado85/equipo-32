@@ -47,7 +47,7 @@ export default function Welcome() {
               ¡Bienvenido, {user.name}!{console.log(user)}
             </h1>
             <p className="text-gray-600 text-lg mb-1">
-              Perfil {user.role === "admin" ? " de administrador" : ""}
+              {/* Perfil {user.roles[0].name === "admin" ? " de administrador" : "" || user.roles[0].name === "doctor" ? " de doctor" : ""} */}
             </p>
             <p className="text-gray-600 text-lg mb-6">
               Accede a tu espacio personal de{" "}
