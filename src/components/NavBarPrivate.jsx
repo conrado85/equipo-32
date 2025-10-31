@@ -30,21 +30,25 @@ function NavBarPrivate() {
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
             <li>
-              <a className="justify-between">
-                Profile
+              <a className="justify-between text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg px-4 py-2 transition-colors font-medium text-base">
+                Perfil
                 <span className="badge">New</span>
               </a>
             </li>
             <li>
-              <a   onClick={() => {
+              <a  
+              className="text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg px-4 py-2 transition-colors font-medium text-base"
+              onClick={() => {
               window.location.href = "/dashboard/settings";
-            }}>Settings</a>
+            }}>Ajustes</a>
             </li>
             <li>
-              <a  onClick={() => {
+              <a 
+              className="text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg px-4 py-2 transition-colors font-medium text-base"
+               onClick={() => {
               localStorage.removeItem("token");
               window.location.href = "/login";
-            }} >Logout</a>
+            }} >Cerrar sesión</a>
             </li>
           </ul>
         </div>
