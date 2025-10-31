@@ -3,9 +3,17 @@
 function NavBarPrivate() {
   return (
     <div className="navbar bg-white shadow-sm">
-      <div className="flex-1">
-        <a className="btn btn-ghost text-xl text-blue-700">SaludOne</a>
-      </div>
+    <div className="flex-1">
+  <a className="btn btn-ghost text-xl text-blue-700 flex items-center gap-2">
+    <img
+      src="/icons/logo.svg"
+      alt="SaludOne logo"
+      className="w-8 h-8"
+    />
+    SaludOne
+  </a>
+</div>
+
       <div className="flex gap-2">
         <input
           type="text"

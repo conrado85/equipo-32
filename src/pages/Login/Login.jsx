@@ -57,9 +57,13 @@ function Login() {
 
       <div className="flex flex-1 items-center justify-center p-6">
         <div className="w-full max-w-md bg-white/80 backdrop-blur-md rounded-2xl p-6 sm:p-8 shadow-lg">
-          <p className="text-center text-gray-600 mb-4 text-lg font-semibold">
-            SaludOne 🩺
-          </p>
+        <p className="text-center text-gray-600 mb-4 text-lg font-semibold flex flex-col items-center">
+            <img
+              src="icons/logo.svg"
+               alt="SaludOne logo"
+              className="w-16 h-auto mb-2 mx-auto"  />
+            <span>SaludOne</span>
+        </p>
 
           <h1 className="text-2xl font-semibold text-gray-800 mb-4 text-center">
             Iniciar sesión
