@@ -5,14 +5,24 @@ const Footer = () => {
     <footer className="footer bg-gray-900 text-white py-16">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Logo y descripción */}
+          
+          {/* 🔹 Logo y descripción */}
           <div className="space-y-4">
-            <h3 className="font-bold text-2xl text-blue-400">SaludOne</h3>
+            <div className="flex items-center gap-2">
+              <img
+                src="icons/logo.svg"
+                alt="SaludOne logo"
+                className="h-8 w-auto"
+              />
+              <h3 className="font-bold text-2xl text-blue-400">SaludOne</h3>
+            </div>
             <p className="text-gray-300 leading-relaxed">
               Conectamos pacientes y médicos en una plataforma de salud digital 
               innovadora, segura y eficiente.
             </p>
-            <div className="flex space-x-4">
+
+            {/* 🔹 Redes sociales */}
+            <div className="flex space-x-4 mt-4">
               <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
                 <img src="/icons/facebook.png" alt="Facebook" className="w-6 h-6" />
               </a>
@@ -25,7 +35,7 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Navegación */}
+          {/* 🔹 Navegación */}
           <div>
             <h6 className="footer-title text-white font-semibold mb-4">Navegación</h6>
             <div className="space-y-2">
@@ -36,7 +46,7 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Soluciones */}
+          {/* 🔹 Soluciones */}
           <div>
             <h6 className="footer-title text-white font-semibold mb-4">Soluciones</h6>
             <div className="space-y-2">
@@ -47,7 +57,7 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Contacto */}
+          {/* 🔹 Contacto */}
           <div>
             <h6 className="footer-title text-white font-semibold mb-4">Contacto</h6>
             <div className="space-y-2">
@@ -56,7 +66,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Línea divisoria y copyright */}
+        {/* 🔹 Línea divisoria y copyright */}
         <div className="border-t border-gray-700 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm">
@@ -74,7 +84,7 @@ const Footer = () => {
         </div>
       </div>
     </footer>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;
