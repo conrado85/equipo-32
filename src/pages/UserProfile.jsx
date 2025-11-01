@@ -43,9 +43,9 @@ export default function UserProfile() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col items-center justify-center p-6">
-      <h1 className="text-3xl font-bold text-gray-800 mb-10">
-        Bienvenido a SaludOne 👋
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 flex flex-col items-center p-8">
+      <h1 className="text-4xl font-bold text-gray-800 mb-10">
+        Bienvenido a <span className="text-blue-600">SaludOne</span>
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl">
