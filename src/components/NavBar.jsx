@@ -17,7 +17,7 @@ function NavBar() {
         <ul className="menu menu-horizontal px-1 space-x-6">
           <li>
             <Link
-              to="/#about"
+              to="#"
               className="text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg px-4 py-2 transition-colors font-medium text-base"
             >
               Sobre Nosotros
