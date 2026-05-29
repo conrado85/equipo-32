@@ -1,7 +1,7 @@
 
 import {  Outlet } from "react-router-dom";
 import Footer from "../components/Footer";
-import NavBarPrivateUser from "../components/NavbarPrivateUser";
+import NavBarPrivateUser from "../components/NavBarPrivateUser";
 
 
 function PrivateUserLayout() {
