@@ -36,8 +36,7 @@ Permite el acceso con diferentes roles (Administrador, Médico, Paciente) y mues
    git clone https://github.com/conrado85/equipo-32.git
    cd equipo-32
 
-Perfecto 🔥 — acá tenés **el archivo completo listo para usar como `README.md`**, ya en formato Markdown puro, sin explicaciones ni texto fuera del archivo.
-Podés copiarlo y pegarlo directamente en tu repo 👇
+
 
 ---
 
